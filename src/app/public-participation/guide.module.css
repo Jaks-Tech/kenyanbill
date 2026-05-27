@@ -1,0 +1,225 @@
+.page {
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0 84px;
+}
+
+.back {
+  display: inline-flex;
+  margin-bottom: 28px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 48px;
+  align-items: end;
+}
+
+.kicker,
+.sectionLabel {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  max-width: 800px;
+  margin-top: 14px;
+  color: #101010;
+  font-size: clamp(38px, 6vw, 68px);
+  line-height: 1.03;
+  letter-spacing: 0;
+}
+
+.hero p:not(.kicker),
+.intro p,
+.notice p {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+.statusPanel,
+.notice {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 22px;
+}
+
+.statusPanel strong {
+  display: block;
+  margin-top: 12px;
+  color: #101010;
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+.statusPanel p {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.section {
+  margin-top: 56px;
+  border-top: 1px solid var(--border);
+  padding-top: 38px;
+}
+
+.section h2,
+.notice h2 {
+  color: #101010;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+}
+
+.cardGrid,
+.templateGrid,
+.deadlineGrid {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.cardGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.templateGrid,
+.deadlineGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card,
+.template,
+.deadlineCard {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 20px;
+}
+
+.card span,
+.template span,
+.deadlineCard span,
+.deadlineMeta span {
+  color: var(--signal);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.card strong,
+.template strong,
+.deadlineCard strong {
+  display: block;
+  margin-top: 14px;
+  color: #101010;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.card p,
+.template li,
+.deadlineCard p,
+.emptyState,
+.errorText {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.template ul {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  padding-left: 20px;
+}
+
+.notice {
+  display: grid;
+  grid-template-columns: minmax(240px, 360px) minmax(0, 1fr);
+  gap: 32px;
+  margin-top: 46px;
+  background: var(--surface-muted);
+}
+
+.notice p {
+  margin-top: 0;
+}
+
+.notice a,
+.deadlineCard a {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.deadlineMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.deadlineMeta span {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fffdf8;
+  padding: 7px 10px;
+  color: #302c27;
+  text-transform: none;
+}
+
+.emptyState,
+.errorText {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 18px;
+}
+
+.errorText {
+  border-color: #d59a8a;
+  background: #fff0ec;
+}
+
+@media (max-width: 980px) {
+  .hero,
+  .notice {
+    grid-template-columns: 1fr;
+  }
+
+  .cardGrid,
+  .templateGrid,
+  .deadlineGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(var(--container), calc(100% - 24px));
+    padding: 40px 0 60px;
+  }
+
+  .hero p:not(.kicker),
+  .intro p,
+  .notice p {
+    font-size: 17px;
+  }
+
+  .cardGrid,
+  .templateGrid,
+  .deadlineGrid {
+    grid-template-columns: 1fr;
+  }
+}

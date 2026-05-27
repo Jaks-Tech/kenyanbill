@@ -1,0 +1,119 @@
+.page {
+  width: min(480px, calc(100% - 32px)); /* Narrowed from 760px for a sleek login card look */
+  margin: 0 auto;
+  padding: 72px 0 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 12px; /* Slightly smoother radius */
+  background: var(--surface);
+  box-shadow: 0 18px 42px rgba(21, 21, 21, 0.08);
+  padding: clamp(24px, 5vw, 42px);
+}
+
+/* --- Centered Header & Logo Styles --- */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logoWrapper {
+  margin-bottom: 16px;
+}
+
+.logo {
+  object-fit: contain;
+}
+
+.title {
+  margin: 0;
+  color: #101010;
+  font-size: 24px; /* Scaled down from the giant 64px display font for better card proportion */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* --- Form & Input Styles (Preserved) --- */
+.formSection {
+  width: 100%;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.form label {
+  display: grid;
+  gap: 8px;
+  color: #24211e;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.form input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: #101010;
+  font: inherit;
+  font-size: 16px;
+  padding: 12px;
+}
+
+/* Updated button to span full width for standard elegant login forms */
+.form button {
+  min-height: 46px;
+  width: 100%; 
+  border: 0;
+  border-radius: 6px;
+  background: #101010;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 0 18px;
+  transition: opacity 0.2s ease;
+}
+
+.form button:hover {
+  opacity: 0.9;
+}
+
+.form button:disabled {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.error {
+  border: 1px solid #d59a8a;
+  border-radius: 8px;
+  background: #fff0ec;
+  color: #8a2713;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 620px) {
+  .page {
+    width: min(480px, calc(100% - 24px));
+    padding: 48px 0 68px;
+  }
+}

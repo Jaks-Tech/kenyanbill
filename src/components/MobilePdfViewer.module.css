@@ -1,0 +1,73 @@
+.viewer {
+  display: none;
+}
+
+.toolbar,
+.zoom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.toolbar button,
+.zoom button {
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #101010;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 0 12px;
+}
+
+.toolbar button:disabled,
+.zoom button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.toolbar span,
+.zoom span {
+  color: #24211e;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.zoom {
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.status {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.canvasWrap {
+  margin-top: 16px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #d8d1c1;
+}
+
+.canvasWrap canvas {
+  display: block;
+  max-width: none;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+@media (max-width: 620px) {
+  .viewer {
+    display: block;
+    background: #ffffff;
+    padding: 14px;
+  }
+}

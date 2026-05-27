@@ -1,0 +1,275 @@
+.page {
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 56px 0 84px;
+}
+
+.hero {
+  max-width: 980px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 42px;
+}
+
+.kicker,
+.sectionLabel {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin-top: 14px;
+  color: #101010;
+  font-size: clamp(38px, 6vw, 68px);
+  line-height: 1.03;
+}
+
+.hero p,
+.sourceBand p,
+.sectionIntro p:not(.sectionLabel) {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.actions a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #101010;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 0 14px;
+}
+
+.actions a:first-child {
+  background: #101010;
+  color: #ffffff;
+}
+
+.sourceBand,
+.processSection,
+.templates,
+.linksSection {
+  margin-top: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 24px;
+}
+
+.sourceBand {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.sourceBand a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #101010;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 0 12px;
+}
+
+.sourceBand h2,
+.sectionIntro h2,
+.amendmentPanel h2,
+.statusPanel h2 {
+  margin-top: 10px;
+  color: #101010;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.1;
+}
+
+.cardGrid,
+.templateList,
+.linkList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.timeline {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  gap: 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 18px;
+}
+
+.timelineItem span {
+  color: var(--signal);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.timelineItem p {
+  color: #171717;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.amendmentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.75fr);
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.amendmentPanel,
+.statusPanel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 24px;
+}
+
+.amendmentPanel ul,
+.statusPanel dl {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.amendmentPanel li {
+  margin-left: 18px;
+  color: #171717;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.statusPanel div {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 14px;
+}
+
+.statusPanel dt {
+  color: var(--signal);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.statusPanel dd {
+  margin-top: 6px;
+  color: #171717;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.card,
+.templateCard,
+.linkCard {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 18px;
+}
+
+.card {
+  min-height: 190px;
+}
+
+.card span,
+.linkCard span {
+  color: var(--signal);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.card p,
+.templateCard p,
+.linkCard p {
+  margin-top: 14px;
+  color: #171717;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.templateCard h3 {
+  color: #101010;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.templateCard p {
+  color: var(--muted);
+}
+
+.templateCard a {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #101010;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 0 12px;
+}
+
+.linkCard {
+  display: block;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.linkCard:hover,
+.linkCard:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .sourceBand,
+  .timelineItem,
+  .amendmentGrid,
+  .cardGrid,
+  .templateList,
+  .linkList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(var(--container), calc(100% - 24px));
+    padding: 40px 0 60px;
+  }
+}
