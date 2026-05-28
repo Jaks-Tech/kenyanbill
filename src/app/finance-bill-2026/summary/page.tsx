@@ -80,7 +80,7 @@ export default async function FinanceBillSummaryPage() {
           <p>
             {generated?.source === "ai"
               ? "This summary was generated from database chunks and should cite source numbers where the source text supports the point."
-              : "This page is using the stored document summary or an extractive fallback because AI generation is not available."}{" "}
+              : "This page is using the stored document summary or an extractive fallback because generation is not available."}{" "}
             <Link href={`/finance-bill-2026/${document.slug}`}>
               Open the source document.
             </Link>

@@ -641,3 +641,76 @@ create policy "Public can read finance bill PDFs"
   on storage.objects
   for select
   using (bucket_id = 'finance-bill-documents');
+
+create table if not exists public.public_poll_analyses (
+  id uuid primary key default gen_random_uuid(),
+  slug text not null unique,
+  title text not null,
+  summary text not null,
+  content text not null,
+  poll_count integer not null default 0,
+  vote_count integer not null default 0,
+  analyzed_at timestamptz not null default now(),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists public_poll_analyses_analyzed_at_idx
+  on public.public_poll_analyses (analyzed_at desc);
+
+alter table public.public_poll_analyses enable row level security;
+
+drop policy if exists "Public can read poll analyses"
+  on public.public_poll_analyses;
+
+create policy "Public can read poll analyses"
+  on public.public_poll_analyses
+  for select
+  using (true);
+
+-- Add to realtime
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'public_poll_analyses'
+  ) then
+    alter publication supabase_realtime add table public.public_poll_analyses;
+  end if;
+end $$;
+
+alter table public.public_polls add column if not exists like_count integer not null default 0;
+alter table public.public_poll_analyses add column if not exists like_count integer not null default 0;
+
+create table if not exists public.site_likes (
+  id uuid primary key default gen_random_uuid(),
+  target_type text not null check (target_type in ('poll', 'analysis')),
+  target_id uuid not null,
+  anonymous_session_id text not null,
+  created_at timestamptz not null default now(),
+  unique (target_type, target_id, anonymous_session_id)
+);
+
+create index if not exists site_likes_target_idx on public.site_likes (target_type, target_id);
+
+alter table public.site_likes enable row level security;
+drop policy if exists "Public can read site likes" on public.site_likes;
+create policy "Public can read site likes" on public.site_likes for select using (true);
+
+create table if not exists public.subscribers (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+alter table public.subscribers enable row level security;
+-- Only allow insert, no public read
+drop policy if exists "Public can insert subscribers" on public.subscribers;
+create policy "Public can insert subscribers" on public.subscribers for insert with check (true);
+
+
+NOTIFY pgrst, 'reload schema';
+

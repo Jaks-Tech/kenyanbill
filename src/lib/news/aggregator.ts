@@ -23,12 +23,78 @@ export async function listPublishedNews(limit = 20) {
     return { articles: [] as NewsArticle[], error: "Supabase is not configured." };
   }
 
+  // Fetch breaking news first
+  const { data: breaking, error: breakingError } = await supabase
+    .from("news_articles")
+    .select(
+      "id, slug, title, source_name, source_url, original_url, external_id, summary, excerpt, tags, status, published_at, created_at, updated_at",
+    )
+    .eq("status", "published")
+    .contains("tags", ["breaking"])
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .limit(3);
+
+  if (breakingError) {
+    return { articles: [] as NewsArticle[], error: breakingError.message };
+  }
+
+  const breakingIds = (breaking || []).map(a => a.id);
+
+  // Fetch regular news
+  let query = supabase
+    .from("news_articles")
+    .select(
+      "id, slug, title, source_name, source_url, original_url, external_id, summary, excerpt, tags, status, published_at, created_at, updated_at",
+    )
+    .eq("status", "published")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (breakingIds.length > 0) {
+    query = query.not("id", "in", `(${breakingIds.join(",")})`);
+  }
+
+  const { data: regular, error: regularError } = await query;
+
+  if (regularError) {
+    return { articles: [] as NewsArticle[], error: regularError.message };
+  }
+
+  const articles = [...(breaking || []), ...(regular || [])] as NewsArticle[];
+  return { articles, error: null };
+}
+
+export async function getLatestBreakingNews() {
+  const supabase = getSupabaseServerClient();
+  if (!supabase) return { article: null, error: "Supabase not configured." };
+
+  const { data, error } = await supabase
+    .from("news_articles")
+    .select("*")
+    .eq("status", "published")
+    .contains("tags", ["breaking"])
+    .order("published_at", { ascending: false })
+    .limit(1)
+    .maybeSingle<NewsArticle>();
+  
+  return { article: data, error: error?.message || null };
+}
+
+export async function listBreakingNews(limit = 8) {
+  const supabase = getSupabaseServerClient();
+
+  if (!supabase) {
+    return { articles: [] as NewsArticle[], error: "Supabase not configured." };
+  }
+
   const { data, error } = await supabase
     .from("news_articles")
     .select(
       "id, slug, title, source_name, source_url, original_url, external_id, summary, excerpt, tags, status, published_at, created_at, updated_at",
     )
     .eq("status", "published")
+    .contains("tags", ["breaking"])
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .limit(limit);

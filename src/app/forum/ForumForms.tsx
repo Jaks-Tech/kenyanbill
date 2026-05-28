@@ -184,7 +184,7 @@ export function VerifyButton({
       <input name="target_id" type="hidden" value={targetId} />
       <input name="body" type="hidden" value={body} />
       <button className={styles.inlineButton} type="submit">
-        Verify with AI
+        Verify from sources
       </button>
     </form>
   );

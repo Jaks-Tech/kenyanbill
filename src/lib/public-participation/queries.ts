@@ -29,6 +29,7 @@ export type PublicPoll = {
   status: "open" | "closed" | "hidden";
   created_at: string;
   expires_at: string;
+  like_count: number;
   public_poll_options: PublicPollOption[];
 };
 
@@ -76,7 +77,7 @@ export async function listOpenPublicPolls() {
   const { data, error } = await supabase
     .from("public_polls")
     .select(
-      "id, slug, question, description, category, anonymous_name, status, created_at, expires_at, public_poll_options(id, label, vote_count)",
+      "id, slug, question, description, category, anonymous_name, status, created_at, expires_at, like_count, public_poll_options(id, label, vote_count)",
     )
     .eq("status", "open")
     .order("created_at", { ascending: false });

@@ -126,7 +126,7 @@ const civicLinks = [
   },
   {
     href: "/ask",
-    label: "Ask AI",
+    label: "Chat Finance Bill",
     text: "Ask plain-English questions answered from processed Bill chunks.",
   },
   {
@@ -181,7 +181,7 @@ export default function ExplainersPage() {
           <Link href="/finance-bill-2026/finance-bill-2026">
             Open Finance Bill page
           </Link>
-          <Link href="/ask">Ask AI about the Bill</Link>
+          <Link href="/ask">Chat about the Bill</Link>
         </div>
       </header>
 
@@ -193,7 +193,7 @@ export default function ExplainersPage() {
         <p>
           Explainers should stay tied to the source document. When a claim needs
           detail, users should be pushed back to the database-backed document
-          page or Ask AI for source-backed answers.
+          page or the chat for source-backed answers.
           <Link href="/finance-bill-2026/finance-bill-2026">
             Read the Finance Bill source page
           </Link>

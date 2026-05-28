@@ -59,7 +59,9 @@ export default async function ForumThreadPage({ params }: PageProps) {
           <span>{thread.like_count} likes</span>
           <span>{thread.comment_count} comments</span>
         </div>
-        <p>{thread.body}</p>
+        <div className={styles.threadBody}>
+          <MarkdownContent content={thread.body} />
+        </div>
         <div className={styles.threadFooter}>
           <Link href="/forum">Back to forum</Link>
           <LikeButton
@@ -101,14 +103,14 @@ export default async function ForumThreadPage({ params }: PageProps) {
           >
             <div className={styles.commentHeader}>
               <strong>{comment.anonymous_name}</strong>
-              {comment.is_ai_response ? <span>Source-grounded AI</span> : null}
+              {comment.is_ai_response ? <span>Source-grounded reply</span> : null}
             </div>
             {comment.is_ai_response ? (
               <MarkdownContent
                 content={linkForumSources(comment.body, comment.ai_sources)}
               />
             ) : (
-              <p>{comment.body}</p>
+              <MarkdownContent content={comment.body} />
             )}
             <div className={styles.commentFooter}>
               <span>{comment.like_count} likes</span>
@@ -148,7 +150,7 @@ export default async function ForumThreadPage({ params }: PageProps) {
                   <div className={styles.commentHeader}>
                     <strong>{reply.anonymous_name}</strong>
                     {reply.is_ai_response ? (
-                      <span>Source-grounded AI</span>
+                      <span>Source-grounded reply</span>
                     ) : null}
                   </div>
                   {reply.is_ai_response ? (
@@ -156,7 +158,7 @@ export default async function ForumThreadPage({ params }: PageProps) {
                       content={linkForumSources(reply.body, reply.ai_sources)}
                     />
                   ) : (
-                    <p>{reply.body}</p>
+                    <MarkdownContent content={reply.body} />
                   )}
                   <div className={styles.commentFooter}>
                     <span>{reply.like_count} likes</span>

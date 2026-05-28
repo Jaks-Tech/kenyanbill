@@ -1,3 +1,7 @@
+/* ==========================================================================
+   1. Root Layout & Section Wrappers
+   ========================================================================== */
+
 .page {
   width: min(var(--container), calc(100% - 32px));
   margin: 0 auto;
@@ -11,12 +15,44 @@
   padding-bottom: 42px;
 }
 
+.toolSection,
+.deadlineTracker,
+.activityChart,
+.note {
+  margin-top: 48px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  padding: 32px 24px;
+}
+
+.activityChart {
+  background: var(--surface-muted);
+  display: grid;
+  gap: 24px;
+}
+
+.note {
+  background: var(--surface-muted);
+}
+
+.sectionDivider {
+  margin: 56px 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* ==========================================================================
+   2. Typography Standards
+   ========================================================================== */
+
 .kicker,
 .sectionLabel {
   color: var(--accent);
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .hero h1 {
@@ -24,6 +60,7 @@
   color: #101010;
   font-size: clamp(38px, 6vw, 68px);
   line-height: 1.03;
+  letter-spacing: -0.02em;
 }
 
 .hero p,
@@ -32,6 +69,37 @@
   color: var(--muted);
   font-size: 19px;
   line-height: 1.7;
+}
+
+.status h2,
+.note h2 {
+  margin-top: 10px;
+  color: #101010;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.1;
+}
+
+/* ==========================================================================
+   3. Generic Components & Forms
+   ========================================================================== */
+
+.sectionIntro {
+  max-width: 760px;
+  margin-bottom: 12px;
+}
+
+.sectionIntro h2 {
+  margin-top: 10px;
+  color: #101010;
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.15;
+}
+
+.sectionIntro p:not(.sectionLabel) {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .actions {
@@ -52,11 +120,20 @@
   font-size: 15px;
   font-weight: 800;
   padding: 0 14px;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.actions a:hover {
+  border-color: #101010;
 }
 
 .actions a:first-child {
   background: #101010;
   color: #ffffff;
+}
+
+.actions a:first-child:hover {
+  opacity: 0.9;
 }
 
 .status {
@@ -68,14 +145,6 @@
   border-radius: 8px;
   background: var(--surface);
   padding: 24px;
-}
-
-.status h2,
-.note h2 {
-  margin-top: 10px;
-  color: #101010;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1.1;
 }
 
 .status dl {
@@ -103,53 +172,297 @@
   font-weight: 800;
 }
 
-.toolSection,
-.deadlineTracker {
-  margin-top: 34px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  padding: 24px;
-}
-
-.toolSection {
-  margin-top: 42px;
-}
-
-.sectionIntro {
-  max-width: 760px;
-}
-
-.sectionIntro h2 {
-  margin-top: 10px;
-  color: #101010;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1.1;
-}
-
-.sectionIntro p:not(.sectionLabel) {
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.65;
-}
+/* ==========================================================================
+   4. Lists & Grid Systems
+   ========================================================================== */
 
 .pollList,
 .deadlineList {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 22px;
+  gap: 24px;
+  margin-top: 32px;
 }
+
+.widgetRail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+/* ==========================================================================
+   5. Interactive Participation Cards
+   ========================================================================== */
 
 .pollCard,
 .deadlineCard,
 .emptyTool {
   border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fffdf8;
-  padding: 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
 }
+
+.pollCard,
+.deadlineCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  height: 100%;
+}
+
+.pollCard:hover,
+.deadlineCard:hover {
+  transform: translateY(-2px);
+  border-color: #101010;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.pollCard[data-ended="true"] {
+  opacity: 0.75;
+  background: var(--surface-muted);
+}
+
+.pollHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #f2edd6;
+  padding-bottom: 12px;
+}
+
+.pollHeader span,
+.deadlineCard span,
+.widgetCard span,
+.card span {
+  color: var(--signal);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.widgetCard span,
+.card span {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.card span {
+  font-size: 13px;
+}
+
+.pollHeader strong {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #101010;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.pollWindow {
+  border: 1px solid #d4eafc;
+  border-radius: 8px;
+  background: #f4f9ff;
+  padding: 14px;
+  margin-bottom: 4px;
+}
+
+.pollWindow span {
+  color: #24689b;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.pollWindow p {
+  margin-top: 4px;
+  color: #102133;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.pollCardDescription {
+  margin-top: 12px;
+}
+
+.pollCardDescription :global(.markdown) {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.pollCardDescription :global(.markdown p) {
+  margin-top: 8px;
+}
+
+.analysisFeed {
+  display: grid;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.analysisCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.analysisCard:hover {
+  border-color: #101010;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.analysisMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.analysisMeta span {
+  color: var(--signal);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.analysisCard h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #101010;
+  line-height: 1.2;
+}
+
+.analysisCard h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.analysisSummary {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.analysisFooter {
+  margin-top: 24px;
+}
+
+.readMore {
+  font-weight: 800;
+  color: #101010;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.analysisMetaInline {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.analysisMetaInline strong {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fbfaf8;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #101010;
+}
+
+.lead {
+  font-size: 20px !important;
+  font-weight: 500;
+  color: #101010 !important;
+  margin-top: 24px !important;
+}
+
+.reportContent {
+  margin-top: 56px;
+  max-width: 800px;
+}
+
+.reportFooter {
+  margin-top: 84px;
+  padding-top: 42px;
+  border-top: 1px solid var(--border);
+}
+
+.footerNote {
+  background: var(--surface-muted);
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.footerNote h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #101010;
+  margin-bottom: 12px;
+}
+
+.footerNote p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .analysisCard {
+    padding: 24px;
+  }
+  
+  .analysisCard h2 {
+    font-size: 22px;
+  }
+}
+
+.pollCard .pollAuthor {
+  color: var(--signal);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pollCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.pollOptions,
+.liveVoteGraph {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   6. Custom Input Composers
+   ========================================================================== */
 
 .toggleComposer {
   min-height: 44px;
@@ -208,93 +521,9 @@
   cursor: pointer;
 }
 
-.pollCard,
-.deadlineCard {
-  display: grid;
-  gap: 16px;
-}
-
-.pollCard[data-ended="true"] {
-  opacity: 0.82;
-}
-
-.pollHeader {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.pollHeader span,
-.deadlineCard span {
-  color: var(--signal);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.pollHeader strong {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: #ffffff;
-  color: #101010;
-  font-size: 13px;
-  padding: 7px 10px;
-}
-
-.pollWindow {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #f5fbff;
-  padding: 12px;
-}
-
-.pollWindow span {
-  color: var(--signal);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.pollWindow p {
-  margin-top: 4px;
-  color: #101010;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.4;
-}
-
-.pollCard h3,
-.deadlineCard h3 {
-  color: #101010;
-  font-size: 24px;
-  line-height: 1.18;
-}
-
-.pollCard p,
-.deadlineCard p,
-.emptyTool p {
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.pollCard .pollAuthor {
-  color: var(--signal);
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.pollOptions {
-  display: grid;
-  gap: 10px;
-}
-
-.liveVoteGraph {
-  display: grid;
-  gap: 10px;
-}
+/* ==========================================================================
+   7. Vote Buttons & Core Selection Handles
+   ========================================================================== */
 
 .voteLock {
   border: 1px solid #bad9ef;
@@ -304,113 +533,104 @@
   font-size: 13px;
   font-weight: 800;
   padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.voteButton {
+.voteButton,
+.graphVoteButton {
   position: relative;
   display: grid;
   width: 100%;
   min-height: 52px;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   background: #ffffff;
   color: #101010;
-  font-weight: 800;
   text-align: left;
   cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.voteButton {
+  font-weight: 700;
+}
+
+.graphVoteButton {
+  min-height: 54px;
+}
+
+.voteButton:hover:not(:disabled),
+.graphVoteButton:hover {
+  border-color: #101010;
 }
 
 .voteButton:disabled {
   cursor: not-allowed;
 }
 
-.voteButton span {
+.voteButton span,
+.graphVoteButton span {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 0 14px;
-}
-
-.voteButton small {
-  color: var(--signal);
-  font-size: 13px;
-}
-
-.voteButton i {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: #dff1ff;
-  transition: width 180ms ease;
-}
-
-.graphVoteButton {
-  position: relative;
-  display: grid;
-  width: 100%;
-  min-height: 58px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #ffffff;
-  color: #101010;
-  text-align: left;
-  cursor: pointer;
-}
-
-.graphVoteButton:disabled {
-  cursor: not-allowed;
+  padding: 0 16px;
 }
 
 .graphVoteButton span {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  padding: 0 14px;
 }
 
 .graphVoteButton strong {
-  font-size: 15px;
-  line-height: 1.25;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.voteButton small,
+.graphVoteButton small {
+  color: var(--signal);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .graphVoteButton small {
   border: 1px solid var(--border);
   border-radius: 999px;
   background: #ffffff;
-  color: var(--signal);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  padding: 6px 9px;
+  padding: 4px 8px;
   white-space: nowrap;
 }
 
+.voteButton i,
 .graphVoteButton i {
   position: absolute;
   inset: 0 auto 0 0;
-  background: #dff1ff;
+  background: #e5f3ff;
+  transition: width 180ms ease;
+}
+
+.graphVoteButton i {
+  background: #e1f1ff;
   transition: width 220ms ease;
 }
 
 .graphVoteButton[data-selected="true"] {
-  border-color: #67a6d8;
+  border-color: #24689b;
+  box-shadow: 0 0 0 1px #24689b;
 }
 
-.activityChart {
-  display: grid;
-  gap: 18px;
-  margin-top: 34px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-muted);
-  padding: 24px;
-}
+/* ==========================================================================
+   8. Global Analytics Trends & SVG Graphs
+   ========================================================================== */
 
 .chartIntro {
   display: flex;
@@ -421,10 +641,10 @@
 }
 
 .chartIntro h2 {
-  margin-top: 10px;
+  margin-top: 4px;
   color: #101010;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1.1;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.15;
 }
 
 .chartIntro strong {
@@ -432,8 +652,9 @@
   border-radius: 999px;
   background: #ffffff;
   color: var(--signal);
-  font-size: 15px;
-  padding: 9px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 14px;
 }
 
 .chartFrame {
@@ -441,7 +662,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   background: #ffffff;
-  padding: 16px;
+  padding: 20px;
 }
 
 .chartFrame svg {
@@ -474,12 +695,13 @@
   color: var(--muted);
   font-size: 13px;
   font-weight: 800;
+  padding-top: 4px;
 }
 
 .chartLegend {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .chartLegend div {
@@ -490,7 +712,7 @@
   border: 1px solid var(--border);
   border-radius: 6px;
   background: #ffffff;
-  padding: 10px;
+  padding: 10px 12px;
 }
 
 .chartLegend span {
@@ -516,10 +738,54 @@
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   9. Widget Modules & Ancillary Nodes
+   ========================================================================== */
+
+.widgetCard {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 18px 44px 18px 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.widgetCard button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fffdf8;
+  color: #101010;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 11px;
+}
+
+.widgetCard button:hover {
+  background: #101010;
+  color: #ffffff;
+}
+
+.widgetCard p {
+  margin-top: 8px;
+  color: #24211e;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .deadlineCard dl {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
+  width: 100%;
 }
 
 .deadlineCard dl div {
@@ -555,11 +821,13 @@
   color: #ffffff;
   font-size: 13px;
   font-weight: 800;
-  padding: 0 12px;
+  padding: 0 14px;
 }
 
 .emptyTool {
   margin-top: 22px;
+  text-align: center;
+  padding: 40px 24px;
 }
 
 .emptyTool h3 {
@@ -571,53 +839,156 @@
   margin-top: 10px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 34px;
+/* ==========================================================================
+   10. Secondary Navigation Footer & Micro Layouts
+   ========================================================================== */
+
+.secondaryNavigation {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.footerIntro h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #101010;
+}
+
+.footerIntro p {
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--muted);
 }
 
 .card {
   display: grid;
-  min-height: 190px;
+  min-height: 170px;
   align-content: space-between;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  background: linear-gradient(180deg, #ffffff 0%, #fffdf8 100%);
-  padding: 22px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfbfa 100%);
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+  transition: border-color 150ms ease, transform 150ms ease;
 }
 
-.card span {
-  color: var(--signal);
-  font-size: 14px;
-  font-weight: 800;
-  text-transform: uppercase;
+.card:hover {
+  border-color: #101010;
+  transform: translateY(-1px);
 }
 
 .card p {
   color: #171717;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 750;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
-.note {
-  margin-top: 42px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-muted);
-  padding: 24px;
+/* ==========================================================================
+   11. Local Micro-Metrics Trends (Isolated Bar Graph System)
+   ========================================================================== */
+
+.microChartWrapper {
+  margin: 16px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
 }
+
+.microChartLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.barChartContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.barMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+  width: 100%;
+}
+
+.barText {
+  color: #101010;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.barNumbers {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.barNumbers strong {
+  color: #101010;
+  font-weight: 700;
+}
+
+/* 💡 THE MISSING FIX: Core layout definitions for the visual tracks */
+.barTrack {
+  width: 100%;
+  height: 8px;
+  background: #f5f4f0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.noVotesBox {
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: #faf9f6;
+  text-align: center;
+}
+
+.noVotesBox p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+/* ==========================================================================
+   12. Clean Form Responsive Breakpoints
+   ========================================================================== */
 
 @media (max-width: 900px) {
   .status,
   .grid,
+  .widgetRail,
   .pollList,
   .chartLegend,
   .deadlineList,
   .deadlineCard dl {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
@@ -625,5 +996,171 @@
   .page {
     width: min(var(--container), calc(100% - 24px));
     padding: 40px 0 60px;
+  }
+
+  .toolSection,
+  .deadlineTracker,
+  .activityChart,
+  .note {
+    padding: 24px 16px;
+  }
+
+  .pollList,
+  .deadlineList {
+    gap: 18px;
+  }
+}
+
+/* ==========================================================================
+   13. Premium Archive Card & Drawer System
+   ========================================================================== */
+
+.archiveSection {
+  margin-top: 48px;
+  width: 100%;
+}
+
+.archiveCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfaf8 100%);
+  padding: 32px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+}
+
+.archiveHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.archiveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1ebd9;
+  color: #504a38;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.archiveBadgeIcon {
+  color: #736b54;
+}
+
+.archiveCount {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.archiveBody {
+  margin-bottom: 24px;
+}
+
+.archiveBody h2 {
+  color: #101010;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 8px 0;
+}
+
+.archiveBody p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 640px;
+}
+
+/* Custom Interactive Drawer Wrapper */
+.sourceDrawer {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: border-color 150ms ease;
+}
+
+.sourceDrawer:hover {
+  border-color: #101010;
+}
+
+.sourceDrawerSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+
+.sourceDrawerSummary::-webkit-details-marker {
+  display: none;
+}
+
+.summaryTitle {
+  font-size: 14px;
+  font-weight: 800;
+  color: #101010;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.chevronIcon {
+  color: var(--muted);
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms ease;
+}
+
+.sourceDrawerSummary:hover .chevronIcon {
+  color: #101010;
+}
+
+/* Open States */
+.sourceDrawer[open] .chevronIcon {
+  transform: rotate(-180deg);
+}
+
+.sourceDrawer[open] .sourceDrawerSummary {
+  border-bottom: 1px solid var(--border);
+  background: #fafaf8;
+}
+
+.archivedPollsWrapper {
+  padding: 24px;
+  background: #fafaf7;
+  animation: cardSlideDown 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive updates */
+@media (max-width: 640px) {
+  .archiveCard {
+    padding: 24px 16px;
+  }
+  
+  .archiveBody h2 {
+    font-size: 22px;
+  }
+
+  .archivedPollsWrapper {
+    padding: 12px;
   }
 }

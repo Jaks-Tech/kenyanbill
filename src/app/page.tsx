@@ -14,7 +14,7 @@ const primaryRoutes = [
   },
   {
     href: "/ask",
-    label: "Ask AI",
+    label: "Chat Finance Bill",
     text: "Ask questions answered from Finance Bill source chunks and cited context.",
   },
 ];
@@ -74,7 +74,7 @@ export default function Home() {
           <h1>Understand the Finance Bill, then take part.</h1>
           <p>
             Kenyan Bill connects source documents, plain-language summaries,
-            public participation guides, news, AI answers, and anonymous
+            public participation guides, news, sourced answers, and anonymous
             discussion so citizens can move from reading to action.
           </p>
           <div className={styles.ctas}>

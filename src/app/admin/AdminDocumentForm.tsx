@@ -98,7 +98,7 @@ export function AdminDocumentForm() {
         <textarea
           name="summary"
           onChange={(event) => setSummary(event.target.value)}
-          placeholder="Optional plain-language summary. AI-generated summaries can be added later."
+          placeholder="Optional plain-language summary. Generated summaries can be added later."
           rows={5}
           value={summary}
         />

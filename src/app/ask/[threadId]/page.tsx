@@ -19,10 +19,10 @@ export async function generateMetadata({
   const { thread } = await getAskThread(threadId);
 
   return {
-    title: thread ? thread.title : "Ask AI Thread",
+    title: thread ? thread.title : "Finance Bill Chat",
     description:
       thread?.summary ??
-      "Read a public Kenyan Bill Ask AI thread about the Finance Bill 2026.",
+      "Read a public Kenyan Bill chat about the Finance Bill 2026.",
     robots: {
       index: false,
       follow: true,

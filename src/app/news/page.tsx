@@ -33,25 +33,32 @@ export default async function NewsPage() {
 
       {articles.length > 0 ? (
         <section className={styles.grid}>
-          {articles.map((article) => (
-            <article className={styles.card} key={article.id}>
-              <div>
-                <span>{article.source_name ?? "External source"}</span>
-                <h2>
-                  <Link href={`/news/${article.slug}`}>{article.title}</Link>
-                </h2>
-                <p>{article.summary ?? article.excerpt}</p>
-              </div>
-              <div className={styles.cardFooter}>
-                <Link href={`/news/${article.slug}`}>View summary</Link>
-                {article.original_url ? (
-                  <a href={article.original_url} target="_blank" rel="noreferrer">
-                    Read full story
-                  </a>
-                ) : null}
-              </div>
-            </article>
-          ))}
+          {articles.map((article) => {
+            const isBreaking = article.tags?.includes("breaking");
+            return (
+              <article 
+                className={`${styles.card} ${isBreaking ? styles.breakingCard : ""}`} 
+                key={article.id}
+              >
+                {isBreaking && <span className={styles.breakingLabel}>Breaking</span>}
+                <div>
+                  <span className={styles.sourceName}>{article.source_name ?? "External source"}</span>
+                  <h2>
+                    <Link href={`/news/${article.slug}`}>{article.title}</Link>
+                  </h2>
+                  <p>{article.summary ?? article.excerpt}</p>
+                </div>
+                <div className={styles.cardFooter}>
+                  <Link href={`/news/${article.slug}`}>View summary</Link>
+                  {article.original_url ? (
+                    <a href={article.original_url} target="_blank" rel="noreferrer">
+                      Read full story
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
         </section>
       ) : (
         <section className={styles.empty}>

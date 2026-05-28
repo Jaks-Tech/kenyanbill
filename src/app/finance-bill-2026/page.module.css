@@ -65,35 +65,107 @@
   background: var(--surface);
 }
 
-.statusPanel {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  padding: 24px;
+/* 💡 UPDATED: Swapped heavy statusPanel tokens for the minimalist inline badge system */
+.statusBadgeWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 28px;
 }
 
-.statusPanel span {
-  color: var(--signal);
+.statusBadge {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e8dfce;
+  border-radius: 999px;
+  background: #fffdf8;
+  padding: 6px 14px 6px 10px;
+}
+
+.badgeCore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b35309;
+}
+
+.statusText {
   font-size: 13px;
-  font-weight: 800;
-  text-transform: uppercase;
+  font-weight: 750;
+  color: #403c37;
 }
 
-.statusPanel strong {
-  display: block;
-  margin-top: 12px;
-  color: #101010;
-  font-size: 28px;
-  line-height: 1.1;
+/* New Rich Metadata Elements */
+.badgeMetaMetrics {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.statusPanel p {
-  margin-top: 16px;
+.metricSeparator {
+  color: #dcd6c5;
+  font-size: 12px;
+}
+
+.metricPill {
+  font-size: 12px;
   color: var(--muted);
-  font-size: 16px;
-  line-height: 1.6;
 }
 
+.metricPill strong {
+  color: #101010;
+  font-weight: 700;
+}
+
+/* Success Verified Overrides */
+.statusBadge[data-verified="true"] {
+  border-color: #bee3cb;
+  background: #f4fbf7;
+}
+
+.statusBadge[data-verified="true"] .statusDot {
+  background: #0b6b44;
+}
+
+.statusBadge[data-verified="true"] .statusText {
+  color: #0b6b44;
+}
+
+.statusBadge[data-verified="true"] .metricSeparator {
+  color: #ceeade;
+}
+
+.statusBadge[data-verified="true"] .metricPill {
+  color: #4b6e5a;
+}
+
+.statusBadge[data-verified="true"] .metricPill strong {
+  color: #0b6b44;
+}
+
+/* Ensure data packs stack smoothly on tiny screens */
+@media (max-width: 480px) {
+  .statusBadge {
+    border-radius: 12px;
+    padding: 10px;
+  }
+  .metricSeparator {
+    display: none;
+  }
+  .badgeMetaMetrics {
+    width: 100%;
+    padding-left: 15px;
+    margin-top: 4px;
+    gap: 12px;
+  }
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -389,6 +461,7 @@
   }
 }
 
+/* 💡 OPTIMIZED: Clean flex layouts inside phone boundaries to avoid overflow */
 @media (max-width: 620px) {
   .page {
     width: min(var(--container), calc(100% - 24px));
@@ -396,11 +469,23 @@
   }
 
   .hero {
-    gap: 32px;
+    gap: 24px;
   }
 
   .hero p {
     font-size: 18px;
+  }
+
+  /* Full-width stack buttons for easy mobile tapping */
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .actions a {
+    width: 100%;
+    min-height: 48px;
   }
 
   .grid {
@@ -422,8 +507,20 @@
     grid-template-columns: 1fr;
   }
 
+  /* Transform mobile layout grids to unified vertical flows */
   .featuredDocument {
+    grid-template-columns: 1fr;
+    gap: 24px;
     padding: 22px;
+  }
+
+  .featuredActions {
+    width: 100%;
+  }
+
+  .featuredActions a {
+    width: 100%;
+    min-height: 44px;
   }
 
   .card {
@@ -432,9 +529,57 @@
 
   .split {
     margin-top: 56px;
+    gap: 28px;
   }
 
   .sourceSection {
     padding: 22px;
+    gap: 24px;
+  }
+}
+
+/* ==========================================================================
+   Zero-Speculation Protocol Note Block
+   ========================================================================== */
+
+.note {
+  margin-top: clamp(48px, 8vw, 72px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-muted); /* Clean, subtle tint to signal a system notice */
+  padding: clamp(24px, 5vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note .sectionLabel {
+  color: var(--signal); /* Switches kicker token to highlight notice priority */
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.note h2 {
+  color: #101010;
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.note p:not(.sectionLabel) {
+  color: var(--muted);
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: 1.6;
+  margin: 4px 0 0 0;
+  max-width: 720px;
+}
+
+@media (max-width: 620px) {
+  .note {
+    padding: 20px 16px;
+    gap: 8px;
   }
 }

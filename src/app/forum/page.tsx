@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { RealtimeRefresh } from "@/components/RealtimeRefresh";
+import { MarkdownContent } from "@/components/MarkdownContent";
 import { listForumThreads } from "@/lib/forum/queries";
 import { LikeButton, ReportButton } from "./ForumForms";
 import styles from "./forum.module.css";
@@ -19,16 +20,17 @@ export default async function ForumPage() {
   return (
     <div className={styles.page}>
       <RealtimeRefresh table="forum_threads" />
+      <RealtimeRefresh table="forum_comments" />
       <header className={styles.header}>
         <p className={styles.kicker}>Public forum</p>
         <h1>Anonymous real talk on the Finance Bill and Kenya.</h1>
         <p>
           Post questions, share views, reply to others, and mention
-          @kenyanbill when you want a source-grounded AI explanation.
+          @kenyanbill when you want a source-grounded explanation.
         </p>
         <div className={styles.actions}>
           <Link href="/forum/new">Start a thread</Link>
-          <Link href="/ask">Ask AI privately</Link>
+          <Link href="/ask">Chat the finance bill</Link>
         </div>
       </header>
 
@@ -47,7 +49,9 @@ export default async function ForumPage() {
                 <span>{thread.like_count} likes</span>
                 <span>{thread.comment_count} comments</span>
               </div>
-              <p>{thread.body}</p>
+              <div className={styles.threadPreview}>
+                <MarkdownContent content={thread.body.length > 200 ? thread.body.substring(0, 200) + "..." : thread.body} />
+              </div>
               <div className={styles.threadFooter}>
                 <Link href={`/forum/thread/${thread.slug}`}>Open thread</Link>
                 <LikeButton targetId={thread.id} targetType="thread" />

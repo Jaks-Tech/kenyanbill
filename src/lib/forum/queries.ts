@@ -24,9 +24,25 @@ export async function listForumThreads(sort: "trending" | "latest" = "trending")
   }
 
   const { data, error } = await query;
+  const threads = (data ?? []) as ForumThread[];
+
+  const threadsWithLiveCounts = await Promise.all(
+    threads.map(async (thread) => {
+      const { count } = await supabase
+        .from("forum_comments")
+        .select("id", { count: "exact", head: true })
+        .eq("thread_id", thread.id)
+        .eq("status", "visible");
+
+      return {
+        ...thread,
+        comment_count: count ?? 0,
+      };
+    }),
+  );
 
   return {
-    threads: (data ?? []) as ForumThread[],
+    threads: threadsWithLiveCounts,
     error: error?.message ?? null,
   };
 }
@@ -67,7 +83,10 @@ export async function getForumThreadBySlug(slug: string) {
     .order("created_at", { ascending: true });
 
   return {
-    thread,
+    thread: {
+      ...thread,
+      comment_count: comments?.length ?? 0,
+    },
     comments: (comments ?? []) as ForumComment[],
     error: commentsError?.message ?? null,
   };

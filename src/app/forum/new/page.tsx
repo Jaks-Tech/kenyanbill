@@ -26,7 +26,7 @@ export default async function NewForumThreadPage({
         <h1>Post a question or view anonymously.</h1>
         <p>
           Your public name will be anonymous. Mention @kenyanbill if you want
-          the AI to reply with source-grounded context.
+          a source-grounded reply.
         </p>
       </header>
       <NewThreadForm initialBody={params.body} initialTitle={params.title} />

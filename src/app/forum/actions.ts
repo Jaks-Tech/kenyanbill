@@ -236,7 +236,7 @@ async function createAiForumReply({
     body:
       result.answer ||
       "I could not verify that from the currently processed Finance Bill sources.",
-    anonymous_name: "Kenyan Bill AI",
+    anonymous_name: "Kenyan Bill",
     anonymous_session_id: "kenyan-bill-ai",
     is_ai_response: true,
     ai_sources: result.sources.map((source, index) => ({

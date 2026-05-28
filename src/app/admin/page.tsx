@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   hasSupabaseAdminConfig,
   listFinanceBillDocuments,
+  getSupabaseAdminClient,
 } from "@/lib/supabase/admin";
 import { listParticipationDeadlines } from "@/lib/public-participation/queries";
 import { AdminDocumentForm } from "./AdminDocumentForm";
@@ -13,7 +15,17 @@ import {
   fetchParticipationDeadlinesAction,
   fetchNewsAction,
   processFinanceBillDocument,
+  deleteAllNewsArticles,
+  deleteAllForumThreads,
+  deleteAllPublicPolls,
+  deleteAllDeadlines,
+  deleteAllForumComments,
+  deleteAllContent,
+  generateAiForumTopicsAction,
+  generatePollAnalysisAction,
+  generateBreakingNewsAction,
 } from "./actions";
+import { SelectiveDeletePanel } from "./SelectiveDeletePanel";
 import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +46,14 @@ type AdminPageProps = {
   }>;
 };
 
+type DeleteListItem = {
+  id: string;
+  title: string;
+  description?: string;
+  date?: string;
+  extra?: string;
+};
+
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   await requireAdminSession();
 
@@ -45,6 +65,65 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const publishedCount = documents.filter(
     (document) => document.status === "published",
   ).length;
+
+  // Fetch all items for deletion interface
+  const supabase = getSupabaseAdminClient();
+  
+  let allNewsArticles: DeleteListItem[] = [];
+  let allForumThreads: DeleteListItem[] = [];
+  let allForumComments: DeleteListItem[] = [];
+  let allPublicPolls: DeleteListItem[] = [];
+
+  if (supabase) {
+    try {
+      const [newsResult, threadsResult, commentsResult, pollsResult] = await Promise.all([
+        supabase
+          .from("news_articles")
+          .select("id, title, excerpt, published_at")
+          .order("published_at", { ascending: false }),
+        supabase
+          .from("forum_threads")
+          .select("id, title, body, created_at")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("forum_comments")
+          .select("id, body, created_at")
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("public_polls")
+          .select("id, question, created_at")
+          .order("created_at", { ascending: false }),
+      ]);
+
+      allNewsArticles = (newsResult.data ?? []).map((article: any) => ({
+        id: article.id,
+        title: article.title || "Untitled",
+        description: article.excerpt || undefined,
+        date: article.published_at ? new Date(article.published_at).toLocaleDateString() : undefined,
+      }));
+
+      allForumThreads = (threadsResult.data ?? []).map((thread: any) => ({
+        id: thread.id,
+        title: thread.title || "Untitled",
+        description: thread.body ? thread.body.substring(0, 100) : undefined,
+        date: thread.created_at ? new Date(thread.created_at).toLocaleDateString() : undefined,
+      }));
+
+      allForumComments = (commentsResult.data ?? []).map((comment: any) => ({
+        id: comment.id,
+        title: comment.body ? comment.body.substring(0, 80) : "Comment",
+        date: comment.created_at ? new Date(comment.created_at).toLocaleDateString() : undefined,
+      }));
+
+      allPublicPolls = (pollsResult.data ?? []).map((poll: any) => ({
+        id: poll.id,
+        title: poll.question || "Untitled poll",
+        date: poll.created_at ? new Date(poll.created_at).toLocaleDateString() : undefined,
+      }));
+    } catch (err) {
+      console.error("Failed to fetch delete items:", err);
+    }
+  }
 
   const tabs = [
     {
@@ -64,7 +143,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <article>
             <span>Processed documents</span>
             <strong>{processedCount}</strong>
-            <p>Documents with chunks ready for summaries and Ask AI retrieval.</p>
+            <p>Documents with chunks ready for summaries and chat retrieval.</p>
           </article>
           <article>
             <span>Deadline records</span>
@@ -124,9 +203,72 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               <button type="submit">Look up deadlines now</button>
             </form>
           </section>
-        </div>
-      ),
-    },
+
+          <section className={styles.newsPanel}>
+            <div>
+              <p className={styles.sectionLabel}>Forum daily topics</p>
+              <h3>Generate engaging forum discussions</h3>
+              <p>
+                Uses the source context and latest links to publish 10 fresh
+                discussion topics to the forum.
+              </p>
+            </div>
+            <form action={generateAiForumTopicsAction}>
+              <button type="submit">Generate topics now</button>
+            </form>
+          </section>
+
+          <section className={styles.newsPanel}>
+            <div>
+              <p className={styles.sectionLabel}>Daily vote topics</p>
+              <h3>Publish 10 fresh public polls</h3>
+              <p>
+                Refresh external links, read the processed Bill context, and
+                publish today&apos;s 24-hour vote topics.
+              </p>
+            </div>
+            <form action={generateAiForumTopicsAction}>
+              <button type="submit">Generate topics now</button>
+            </form>
+            </section>
+
+            <section className={styles.newsPanel}>
+            <div>
+              <p className={styles.sectionLabel}>Daily Analysis</p>
+              <h3>Analyze public sentiment</h3>
+              <p>
+                Processes all active and recent poll results using AI to
+                generate a comprehensive report on the public mood and trends.
+              </p>
+            </div>
+            <form action={generatePollAnalysisAction}>
+              <button type="submit">Run analysis now</button>
+            </form>
+            </section>
+
+          <section className={styles.newsPanel}>
+            <div>
+              <p className={styles.sectionLabel}>Breaking News Generator</p>
+              <h3>Create a news summary from a topic</h3>
+              <p>
+                Enter a topic (e.g., "Kenya Ebola quarantine center approved"), and the
+                system will search for news, draft a summary, and create a breaking
+                news post.
+              </p>
+            </div>
+            <form action={generateBreakingNewsAction} className={styles.singleFieldForm}>
+              <input
+                type="text"
+                name="topic"
+                placeholder="Enter breaking news topic..."
+                required
+              />
+              <button type="submit">Generate Article</button>
+            </form>
+          </section>
+            </div>
+            ),
+            },
     {
       id: "deadlines",
       label: "Deadlines",
@@ -136,20 +278,57 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         "Read the current records saved by the automated internet lookup.",
       content: <DeadlineList deadlines={deadlines} />,
     },
+    {
+      id: "data-management",
+      label: "Data Management",
+      kicker: "Cleanup",
+      title: "Delete website content",
+      description:
+        "Permanently remove content from the website. Select which items to delete.",
+      content: (
+        <SelectiveDeletePanel
+          newsArticles={allNewsArticles}
+          forumThreads={allForumThreads}
+          forumComments={allForumComments}
+          publicPolls={allPublicPolls}
+          deadlines={deadlines.map((deadline) => ({
+            id: deadline.id,
+            title: deadline.title || "Untitled",
+            description: deadline.description || undefined,
+            date: deadline.deadline_at
+              ? new Date(deadline.deadline_at).toLocaleDateString()
+              : undefined,
+            extra: deadline.committee || undefined,
+          }))}
+        />
+      ),
+    },
   ];
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div>
-          <p className={styles.kicker}>Admin dashboard</p>
-          <h1>Manage Kenyan Bill content.</h1>
-          <p>
-            Use tabs to manage source documents, automated lookups, extracted
-            deadline records, and public content state.
-          </p>
+      <header className={styles.heroCard}>
+        <div className={styles.heroContent}>
+          <div className={styles.logoWrapper}>
+            <Image
+              src="/kb-logo.png"
+              alt="Kenyan Bill Logo"
+              width={80}
+              height={80}
+              className={styles.heroLogo}
+              priority
+            />
+          </div>
+          <div className={styles.heroText}>
+            <p className={styles.kicker}>Admin dashboard</p>
+            <h1>Manage Kenyan Bill content.</h1>
+            <p>
+              Use tabs to manage source documents, automated lookups, extracted
+              deadline records, and public content state.
+            </p>
+          </div>
         </div>
-        <form action={logoutAdmin}>
+        <form action={logoutAdmin} className={styles.heroLogoutForm}>
           <button className={styles.logoutButton} type="submit">
             Log out
           </button>
@@ -161,7 +340,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           {params.success}
         </div>
       ) : null}
-      {params.error ? (
+      {params.error && params.error !== "NEXT_REDIRECT" ? (
         <div className={styles.notice} data-kind="error">
           {params.error}
         </div>

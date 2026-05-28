@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { BreakingNewsBanner } from "@/components/BreakingNewsBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { NewsletterPopup } from "@/components/NewsletterPopup";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | Kenyan Bill",
   },
   description:
-    "Kenyan Bill is an anonymous public forum, news hub, and AI guide for understanding Kenya's Finance Bill 2026.",
+    "Kenyan Bill is an anonymous public forum, news hub, and source guide for understanding Kenya's Finance Bill 2026.",
   openGraph: {
     title: "Kenyan Bill",
     description:
@@ -42,12 +44,14 @@ export default function RootLayout({
           Skip to content
         </a>
         <Header />
+        <BreakingNewsBanner />
 
         <main id="main-content" className="site-main">
           {children}
         </main>
 
         <Footer />
+        <NewsletterPopup />
       </body>
     </html>
   );

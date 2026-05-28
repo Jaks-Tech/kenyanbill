@@ -93,7 +93,7 @@ export default async function FinanceBillDocumentPage({
           <h1>{document.title}</h1>
           <p>
             {document.description ??
-              "Read the official source document, inspect highlighted retrieved chunks, and move into summaries, AI questions, or public discussion from the same source."}
+              "Read the official source document, inspect highlighted retrieved chunks, and move into summaries, chat questions, or public discussion from the same source."}
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default async function FinanceBillDocumentPage({
           <strong>{document.source_name ?? "Uploaded source"}</strong>
           <p>
             {document.processed_at
-              ? "This document has been processed for source-based summaries and AI retrieval."
+              ? "This document has been processed for source-based summaries and retrieval."
               : "This document is published. Processing status will appear here after chunking."}
           </p>
         </aside>
@@ -120,7 +120,7 @@ export default async function FinanceBillDocumentPage({
           <span>Publication date pending</span>
         )}
         <span>{document.chunk_count ?? 0} source chunks</span>
-        {document.processed_at ? <span>Processed for AI</span> : null}
+        {document.processed_at ? <span>Processed for chat</span> : null}
         {pdfUrl ? <span>PDF available</span> : <span>PDF pending</span>}
       </section>
 
@@ -192,7 +192,7 @@ export default async function FinanceBillDocumentPage({
           <section className={styles.panel}>
             <h2>Actions</h2>
             <div className={styles.actions}>
-              <Link href={`/ask?source=${document.slug}`}>Ask about this PDF</Link>
+              <Link href={`/ask?source=${document.slug}`}>Chat about this PDF</Link>
               <Link href={`/forum/new?topic=${document.slug}`}>
                 Discuss anonymously
               </Link>
@@ -203,7 +203,7 @@ export default async function FinanceBillDocumentPage({
           <section className={styles.panel}>
             <h2>Source use</h2>
             <p>
-              AI answers, highlights, and summaries should point back to this
+              Chat answers, highlights, and summaries should point back to this
               document so readers can check public claims against source text.
             </p>
           </section>

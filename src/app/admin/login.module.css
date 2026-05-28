@@ -1,7 +1,7 @@
 .page {
-  width: min(480px, calc(100% - 32px)); /* Narrowed from 760px for a sleek login card look */
+  width: min(480px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 72px 0 96px;
+  padding: 80px 0 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,111 +9,152 @@
 
 .card {
   border: 1px solid var(--border);
-  border-radius: 12px; /* Slightly smoother radius */
+  border-radius: 12px;
   background: var(--surface);
-  box-shadow: 0 18px 42px rgba(21, 21, 21, 0.08);
-  padding: clamp(24px, 5vw, 42px);
+  box-shadow: 0 8px 24px rgba(21, 21, 21, 0.08);
+  padding: clamp(28px, 5vw, 48px);
 }
 
-/* --- Centered Header & Logo Styles --- */
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .logoWrapper {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .logo {
   object-fit: contain;
+  border-radius: 8px;
 }
 
 .title {
   margin: 0;
   color: #101010;
-  font-size: 24px; /* Scaled down from the giant 64px display font for better card proportion */
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 900;
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .subtitle {
-  margin-top: 6px;
+  margin-top: 8px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-/* --- Form & Input Styles (Preserved) --- */
 .formSection {
   width: 100%;
 }
 
 .form {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .form label {
   display: grid;
   gap: 8px;
   color: #24211e;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .form input {
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #fffdf8;
+  border-radius: 8px;
+  background: #fafaf8;
   color: #101010;
   font: inherit;
-  font-size: 16px;
-  padding: 12px;
+  font-size: 15px;
+  padding: 12px 14px;
+  transition: all 0.2s ease;
 }
 
-/* Updated button to span full width for standard elegant login forms */
+.form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(31, 111, 74, 0.08);
+}
+
 .form button {
-  min-height: 46px;
-  width: 100%; 
+  min-height: 48px;
+  width: 100%;
   border: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #101010;
   color: #ffffff;
   cursor: pointer;
   font: inherit;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 900;
   padding: 0 18px;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
+  margin-top: 4px;
 }
 
 .form button:hover {
-  opacity: 0.9;
+  background: #302c27;
 }
 
 .form button:disabled {
   cursor: progress;
-  opacity: 0.72;
+  opacity: 0.7;
 }
 
 .error {
   border: 1px solid #d59a8a;
   border-radius: 8px;
-  background: #fff0ec;
+  background: #fff3ed;
   color: #8a2713;
-  font-size: 14px;
-  font-weight: 800;
-  padding: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 14px;
+  margin-top: 4px;
+  line-height: 1.5;
 }
 
-/* --- Responsive Adjustments --- */
 @media (max-width: 620px) {
   .page {
     width: min(480px, calc(100% - 24px));
-    padding: 48px 0 68px;
+    padding: 60px 0 80px;
+  }
+
+  .card {
+    padding: clamp(24px, 5vw, 36px);
+  }
+
+  .header {
+    margin-bottom: 28px;
+  }
+
+  .logoWrapper {
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .form {
+    gap: 14px;
+  }
+
+  .form button {
+    min-height: 44px;
+    font-size: 13px;
   }
 }
