@@ -5,6 +5,8 @@ import { Resend } from "resend";
 
 const logoUrl = "https://kenyanbill.co.ke/kb-logo.png";
 const siteUrl = "https://kenyanbill.co.ke";
+const defaultFromEmail = "updates@kenyanbill.co.ke";
+const defaultFromName = "Kenyan Bill";
 const discordChannelUrl =
   "https://discord.com/channels/1509664745077342319/1509664956658880522";
 
@@ -89,6 +91,8 @@ async function sendDiscordNotification(email: string) {
 
 async function sendWelcomeEmail(email: string) {
   const apiKey = process.env.RESEND_API_KEY;
+  const fromEmail = process.env.RESEND_FROM_EMAIL ?? defaultFromEmail;
+  const fromName = process.env.RESEND_FROM_NAME ?? defaultFromName;
 
   if (!apiKey) {
     console.warn("RESEND_API_KEY is not configured.");
@@ -99,7 +103,7 @@ async function sendWelcomeEmail(email: string) {
 
   try {
     const result = await resend.emails.send({
-      from: "Kenyan Bill <updates@kenyanbill.co.ke>",
+      from: `${fromName} <${fromEmail}>`,
       to: email,
       subject: "Welcome to Kenyan Bill Updates",
       html: `
@@ -132,7 +136,12 @@ async function sendWelcomeEmail(email: string) {
     });
 
     if (result.error) {
-      console.error("Failed to send welcome email:", result.error);
+      console.error("Failed to send welcome email:", {
+        ...result.error,
+        fromEmail,
+        hint:
+          "Check that RESEND_API_KEY belongs to the Resend account where this exact from domain is verified.",
+      });
     }
   } catch (error) {
     console.error("Welcome email error:", error);
